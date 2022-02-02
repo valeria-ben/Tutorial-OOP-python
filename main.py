@@ -1,3 +1,5 @@
+import csv
+
 class Item:
     #CLASS ATTRIBUTE 
     pay_rate = 0.8 # the pay rate after 20% discount
@@ -35,14 +37,27 @@ class Item:
         #es mejor utilizar el self, que un objeto en especifico, da lugar a que se tome en cuenta el instance level
         self.price = self.price * self.pay_rate
 
+    # Convertir este metodo en un class method, se usa un decorator (change the behavior of the functions by calling them before)
+    @classmethod
+    def instantiate_from_csv(cls):
+        with open('items.csv', 'r') as f:
+            reader = csv.DictReader(f)
+            items = list(reader)
+        
+        for item in items:
+            Item(
+                name=str(item.get('name')),          # If you want to copy the line to the line above itself, press Shift + Alt + Up Arrow Key.
+                price=float(item.get('price')),     # HAY UN PROBLEMA AQUI Y NO SE QUE ES, 1:00:00 tutorial
+                quantity=int(item.get('quantity')),
+            )
+
     # Lista de las instancias con sus parametros
     def __repr__(self): 
         return f"Item('{self.name}','{self.price}', '{self.quantity}')"
 
 #INSTANCE ATTRIBUTES 
 
-# crear un objeto (instance/object)
-# aun se pueden asignar atributos a instances especificos, individualmente
+# Objeto/instance; aun se pueden asignar atributos a instances especificos, individualmente
 
 item1 = Item("phone", 100, 5)
 # primero buscará el pay rate en el instance level (no hay dato), luego ira al class level (pay_rate = 0.8)
@@ -58,19 +73,14 @@ print(item2.price)
 # print(Item.__dict__) # Para saber all the attributes for class level
 # print(item1.__dict__) # Para saber all the attributes for instance level
 
-#SEGUNDA PARTE DEL TUTORIAL
-
-item1 = Item("Phone", 100, 1)
-item2 = Item("Laptop", 1000, 3)
-item3 = Item("Cable", 10, 5)
-item4 = Item("Mouse", 50, 5)
-item5 = Item("Keyboard", 75, 5)
-
 print(Item.all)
 
 # Se pueden tomar solo algunos objetos de la lista (lista creada al principio de la clase []) 
 for instance in Item.all:
     print(instance.name)
 
-csv common separated value
+
+Item.instantiate_from_csv() #stores all the instances inside the list
+print(Item.all)
+
 
