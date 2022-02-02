@@ -37,6 +37,7 @@ class Item:
         #es mejor utilizar el self, que un objeto en especifico, da lugar a que se tome en cuenta el instance level
         self.price = self.price * self.pay_rate
 
+    # 1.2 CLASS METHOD
     # Convertir este metodo en un class method, se usa un decorator (change the behavior of the functions by calling them before)
     @classmethod
     def instantiate_from_csv(cls):
@@ -47,13 +48,26 @@ class Item:
         for item in items:
             Item(
                 name=str(item.get('name')),          # If you want to copy the line to the line above itself, press Shift + Alt + Up Arrow Key.
-                price=float(item.get('price')),     # HAY UN PROBLEMA AQUI Y NO SE QUE ES, 1:00:00 tutorial
+                # price=float(item.get('price')),     # HAY UN PROBLEMA AQUI Y NO SE QUE ES, 1:00:00 tutorial
                 quantity=int(item.get('quantity')),
             )
+    # 1.3 STATIC METHOD
+    @staticmethod
+    def is_interger(num):
+        # we will count out the floats that are point zero (ex: 2.5)
+        if isinstance(num, float):
+            # Count out the floats that are point zero
+            return num.is_integer()
+        elif isinstance(num, int):
+            return True
+        else:
+            return False
 
     # Lista de las instancias con sus parametros
     def __repr__(self): 
         return f"Item('{self.name}','{self.price}', '{self.quantity}')"
+
+# PRINTS --------------------------------------------------------------------------------------
 
 #INSTANCE ATTRIBUTES 
 
@@ -68,7 +82,7 @@ item2 = Item("laptop", 1000,3)
 # primero buscará el pay rate en el instance level, tomará el 0.7
 item2.pay_rate = 0.7
 item2.apply_discount()
-print(item2.price)
+print(item2.price) 
 
 # print(Item.__dict__) # Para saber all the attributes for class level
 # print(item1.__dict__) # Para saber all the attributes for instance level
@@ -79,8 +93,11 @@ print(Item.all)
 for instance in Item.all:
     print(instance.name)
 
-
-Item.instantiate_from_csv() #stores all the instances inside the list
+# 1.2 CLASS METHOD PRINT
+# Item.instantiate_from_csv() #stores all the instances inside the list. AQUI HAY OTRO PROBLEMA
 print(Item.all)
+
+# 1.3 STATIC METHOD PRINT (def is_interger(num):)
+print(Item.is_interger(7.0))
 
 
